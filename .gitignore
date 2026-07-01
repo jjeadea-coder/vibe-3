@@ -1,0 +1,30 @@
+# Dependencies
+frontend/node_modules/
+backend/.venv/
+
+# Build outputs
+frontend/dist/
+
+# Runtime and cache files
+.codex/
+.run/
+.uv-cache/
+__pycache__/
+*.py[cod]
+
+# Local database and generated data
+data/*.sqlite3
+data/*.db
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

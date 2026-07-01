@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>공공직군 행정업무 슈퍼앱 문서</title>
+    <style>
+      :root {
+        --bg: #f5f2ea;
+        --panel: #fffaf0;
+        --ink: #20231f;
+        --muted: #666b5f;
+        --line: #ded6c6;
+        --accent: #1f6f5b;
+        --accent-2: #b65f27;
+        --soft: #e8efe4;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, rgba(31, 111, 91, 0.16), transparent 32rem),
+          linear-gradient(135deg, #f5f2ea 0%, #ebe4d4 100%);
+        font-family: Georgia, "Times New Roman", serif;
+        line-height: 1.65;
+      }
+
+      header {
+        padding: 56px 7vw 36px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .eyebrow {
+        margin: 0 0 12px;
+        color: var(--accent-2);
+        font-family: "Segoe UI", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 980px;
+        margin: 0;
+        font-size: clamp(34px, 6vw, 72px);
+        line-height: 0.98;
+        letter-spacing: -0.05em;
+      }
+
+      .summary {
+        max-width: 820px;
+        margin: 24px 0 0;
+        color: var(--muted);
+        font-family: "Segoe UI", sans-serif;
+        font-size: 18px;
+      }
+
+      main {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 32px;
+        padding: 32px 7vw 64px;
+      }
+
+      nav {
+        position: sticky;
+        top: 24px;
+        align-self: start;
+        padding: 20px;
+        background: rgba(255, 250, 240, 0.78);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        box-shadow: 0 20px 60px rgba(60, 52, 36, 0.08);
+        backdrop-filter: blur(10px);
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      nav a {
+        display: block;
+        padding: 10px 12px;
+        color: var(--ink);
+        border-radius: 12px;
+        text-decoration: none;
+      }
+
+      nav a:hover {
+        background: var(--soft);
+        color: var(--accent);
+      }
+
+      section {
+        margin-bottom: 28px;
+        padding: 28px;
+        background: rgba(255, 250, 240, 0.88);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        box-shadow: 0 24px 80px rgba(60, 52, 36, 0.08);
+      }
+
+      h2 {
+        margin: 0 0 18px;
+        font-size: 32px;
+        letter-spacing: -0.03em;
+      }
+
+      h3 {
+        margin: 28px 0 10px;
+        color: var(--accent);
+        font-family: "Segoe UI", sans-serif;
+        font-size: 18px;
+      }
+
+      p,
+      li {
+        color: var(--muted);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .card {
+        padding: 18px;
+        background: #ffffffa8;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+      }
+
+      .card h3 {
+        margin-top: 0;
+      }
+
+      code,
+      pre {
+        font-family: Consolas, "Courier New", monospace;
+      }
+
+      pre {
+        overflow: auto;
+        padding: 16px;
+        background: #20231f;
+        color: #f6f0df;
+        border-radius: 16px;
+      }
+
+      .badge {
+        display: inline-block;
+        margin: 4px 6px 4px 0;
+        padding: 5px 10px;
+        color: #123a30;
+        background: var(--soft);
+        border-radius: 999px;
+        font-family: "Segoe UI", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .note {
+        padding: 16px;
+        background: #fff0dd;
+        border-left: 5px solid var(--accent-2);
+        border-radius: 12px;
+        color: #69421f;
+      }
+
+      footer {
+        padding: 24px 7vw 48px;
+        color: var(--muted);
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      @media (max-width: 880px) {
+        main {
+          grid-template-columns: 1fr;
+        }
+
+        nav {
+          position: static;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <p class="eyebrow">Documentation Overview</p>
+      <h1>공공직군 행정업무 슈퍼앱</h1>
+      <p class="summary">
+        팀 일정 공유, 엑셀 자동화, 민원 대응 챗봇, 공공 행정 뉴스 수집 기능을 구현하기 위한
+        제품 요구사항, 아키텍처, 운영 가이드를 한눈에 볼 수 있도록 정리한 문서입니다.
+      </p>
+    </header>
+
+    <main>
+      <nav aria-label="문서 목차">
+        <a href="#prd">PRD</a>
+        <a href="#features">핵심 기능</a>
+        <a href="#architecture">아키텍처</a>
+        <a href="#structure">프로젝트 구조</a>
+        <a href="#operation">운영 가이드</a>
+        <a href="#risks">리스크</a>
+      </nav>
+
+      <div>
+        <section id="prd">
+          <h2>PRD 요약</h2>
+          <p>
+            이 앱은 공공기관 행정 담당자가 반복적으로 수행하는 일정 공유, 엑셀 자료 처리,
+            민원 응대 초안 작성, 행정 뉴스 모니터링을 하나의 웹 환경에서 처리하도록 돕는
+            내부 업무 지원 도구입니다.
+          </p>
+          <div>
+            <span class="badge">TypeScript</span>
+            <span class="badge">Vite</span>
+            <span class="badge">React</span>
+            <span class="badge">Python</span>
+            <span class="badge">FastAPI</span>
+            <span class="badge">uv</span>
+            <span class="badge">SQLite</span>
+          </div>
+        </section>
+
+        <section id="features">
+          <h2>핵심 기능</h2>
+          <div class="grid">
+            <article class="card">
+              <h3>팀원 스케쥴 관리</h3>
+              <p>휴가, 근무, 출장, 교육, 외근 일정을 캘린더에서 공유하고 팀원별로 필터링합니다.</p>
+            </article>
+            <article class="card">
+              <h3>엑셀 업무 자동화</h3>
+              <p>엑셀 파일을 특정 컬럼 기준으로 분리하거나 여러 파일을 하나로 병합합니다.</p>
+            </article>
+            <article class="card">
+              <h3>민원 대응 챗봇</h3>
+              <p>첨부된 민원 매뉴얼을 바탕으로 대응 방향, 답변 초안, 전화 스크립트를 생성합니다.</p>
+            </article>
+            <article class="card">
+              <h3>뉴스 기사 수집</h3>
+              <p>공공 행정 관련 뉴스를 매일 아침 수집하고 중복 제거, 요약, 북마크를 지원합니다.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="architecture">
+          <h2>아키텍처 요약</h2>
+          <p>
+            프론트엔드는 React 기반 기능별 모듈 구조를 사용하고, 백엔드는 FastAPI 라우터,
+            서비스, 저장소 계층으로 분리합니다. SQLite는 MVP와 로컬 실행에 적합한 기본 DB로 사용합니다.
+          </p>
+          <h3>API 초안</h3>
+          <ul>
+            <li><code>GET /api/schedules</code>, <code>POST /api/schedules</code></li>
+            <li><code>POST /api/excel/split</code>, <code>POST /api/excel/merge</code></li>
+            <li><code>POST /api/chatbot/manuals</code>, <code>POST /api/chatbot/query</code></li>
+            <li><code>GET /api/news</code>, <code>POST /api/news/collect</code></li>
+          </ul>
+        </section>
+
+        <section id="structure">
+          <h2>권장 프로젝트 구조</h2>
+          <pre><code>day3_rpa/
+  frontend/
+    src/
+      features/
+        schedule/
+        excel/
+        complaint-chatbot/
+        news/
+  backend/
+    app/
+      api/routes/
+      models/
+      schemas/
+      services/
+      repositories/
+  data/
+    app.sqlite3
+  docs/
+    PRD.md
+    Architexture.md
+    Operation.md
+    index.html</code></pre>
+        </section>
+
+        <section id="operation">
+          <h2>운영 가이드</h2>
+          <h3>프론트엔드</h3>
+          <pre><code>cd frontend
+npm run dev</code></pre>
+          <h3>백엔드</h3>
+          <pre><code>cd backend
+$env:UV_CACHE_DIR="..\.uv-cache"
+uv run uvicorn app.main:app --reload</code></pre>
+          <p class="note">
+            현재는 코드 파일이 아직 없으므로 실행 명령은 향후 React 진입점과 FastAPI 앱 작성 후 사용합니다.
+          </p>
+        </section>
+
+        <section id="risks">
+          <h2>주요 리스크</h2>
+          <ul>
+            <li>민원 챗봇 답변의 행정적, 법적 정확성 검증이 필요합니다.</li>
+            <li>엑셀 파일 포맷 다양성으로 인해 처리 오류가 발생할 수 있습니다.</li>
+            <li>공공기관 내부망에서는 외부 뉴스 수집이 제한될 수 있습니다.</li>
+            <li>민원 매뉴얼과 업로드 파일에는 개인정보가 포함될 수 있어 보안 정책이 필요합니다.</li>
+            <li>SQLite는 초기 MVP에는 적합하지만 동시성 요구가 커지면 DB 전환이 필요합니다.</li>
+          </ul>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      상세 내용은 같은 폴더의 PRD.md, Architexture.md, Operation.md를 기준 문서로 사용합니다.
+    </footer>
+  </body>
+</html>
