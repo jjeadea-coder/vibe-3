@@ -1,7 +1,8 @@
-from fastapi import FastAPI
+﻿from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes import chatbot, excel, health, news, schedules
+from app.api.routes import members
 from app.core.database import initialize_database
 
 
@@ -16,6 +17,7 @@ app.add_middleware(
 )
 
 app.include_router(health.router, prefix="/api")
+app.include_router(members.router, prefix="/api")
 app.include_router(schedules.router, prefix="/api")
 app.include_router(excel.router, prefix="/api")
 app.include_router(chatbot.router, prefix="/api")
