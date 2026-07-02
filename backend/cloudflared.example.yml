@@ -1,0 +1,10 @@
+﻿# Example cloudflared configuration for local backend exposure.
+# Replace the placeholders before using it.
+
+tunnel: <TUNNEL_NAME_OR_UUID>
+credentials-file: C:\Users\<YOUR_USER>\.cloudflared\<TUNNEL_UUID>.json
+
+ingress:
+  - hostname: <your-backend-hostname.example.com>
+    service: http://127.0.0.1:8000
+  - service: http_status:404

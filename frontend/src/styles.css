@@ -776,3 +776,48 @@ h3 {
     justify-content: flex-start;
   }
 }
+.connection-panel {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.connection-form {
+  display: grid;
+  gap: 12px;
+}
+
+.connection-actions {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.connection-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.connection-message {
+  margin: 0;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.66);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+.connection-message.success {
+  color: var(--green);
+}
+
+.connection-message.error {
+  color: #9f2f24;
+}
+
+.connection-message.testing {
+  color: var(--rust);
+}

@@ -1,4 +1,6 @@
-﻿export type NewsArticle = {
+﻿import { requestJson as apiRequestJson } from "./client";
+
+export type NewsArticle = {
   id: number;
   title: string;
   source: string | null;
@@ -33,23 +35,7 @@ export type NewsCollectResult = {
 type ListResponse<T> = { items: T[] };
 
 async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(path, {
-    headers: { "Content-Type": "application/json", ...(init?.headers ?? {}) },
-    ...init,
-  });
-
-  if (!response.ok) {
-    let message = `${response.status} ${response.statusText}`;
-    try {
-      const payload = (await response.json()) as { detail?: string };
-      if (payload.detail) message = payload.detail;
-    } catch {
-      // keep HTTP status text
-    }
-    throw new Error(message);
-  }
-
-  return response.json() as Promise<T>;
+  return apiRequestJson<T>(path, init);
 }
 
 function newsQuery(params: { q?: string; keyword?: string; source?: string; bookmarked?: boolean }) {
@@ -114,3 +100,5 @@ export async function deleteNewsSource(id: number): Promise<NewsSource> {
 export async function toggleNewsBookmark(id: number): Promise<NewsArticle> {
   return requestJson<NewsArticle>(`/api/news/${id}/bookmark`, { method: "POST" });
 }
+
+

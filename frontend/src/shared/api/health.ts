@@ -1,3 +1,5 @@
+﻿import { fetchJson } from "./client";
+
 export type SystemHealth = {
   api: {
     status: string;
@@ -11,11 +13,14 @@ export type SystemHealth = {
 };
 
 export async function getSystemHealth(): Promise<SystemHealth> {
-  const response = await fetch("/api/health/system");
+  return fetchJson<SystemHealth>("/api/health/system");
+}
 
-  if (!response.ok) {
-    throw new Error(`시스템 상태 확인 실패: ${response.status}`);
+export async function testBackendConnection(baseUrl: string): Promise<SystemHealth> {
+  const normalized = baseUrl.trim().replace(/\/+$/, "");
+  if (!normalized) {
+    throw new Error("백엔드 URL을 입력하세요.");
   }
 
-  return response.json() as Promise<SystemHealth>;
+  return fetchJson<SystemHealth>("/api/health/system", undefined, normalized);
 }

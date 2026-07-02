@@ -1,4 +1,6 @@
-﻿export type Member = {
+﻿import { requestJson as apiRequestJson } from "./client";
+
+export type Member = {
   id: number;
   name: string;
   department: string | null;
@@ -58,25 +60,7 @@ export type ScheduleUpdateInput = Partial<ScheduleCreateInput>;
 type ListResponse<T> = { items: T[] };
 
 async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(path, {
-    headers: { "Content-Type": "application/json", ...(init?.headers ?? {}) },
-    ...init,
-  });
-
-  if (!response.ok) {
-    let message = `${response.status} ${response.statusText}`;
-    try {
-      const payload = (await response.json()) as { detail?: string };
-      if (payload.detail) {
-        message = payload.detail;
-      }
-    } catch {
-      // fall back to status text
-    }
-    throw new Error(message);
-  }
-
-  return response.json() as Promise<T>;
+  return apiRequestJson<T>(path, init);
 }
 
 function buildScheduleQuery(params: {
@@ -139,3 +123,5 @@ export async function updateSchedule(id: number, input: ScheduleUpdateInput): Pr
 export async function deleteSchedule(id: number): Promise<ScheduleItem> {
   return requestJson<ScheduleItem>(`/api/schedules/${id}`, { method: "DELETE" });
 }
+
+
