@@ -74,3 +74,53 @@ class ScheduleOut(BaseModel):
     created_at: datetime
     updated_at: datetime
     member: MemberSummary | None = None
+
+class NewsArticleOut(BaseModel):
+    id: int
+    title: str
+    source: str | None = None
+    url: str
+    published_at: str | None = None
+    summary: str | None = None
+    keyword: str | None = None
+    is_bookmarked: bool
+    collected_at: str
+    created_at: str
+
+
+class NewsKeywordCreate(BaseModel):
+    keyword: str = Field(min_length=1, max_length=80)
+
+
+class NewsKeywordOut(BaseModel):
+    id: int
+    keyword: str
+    created_at: str
+
+
+class NewsSourceCreate(BaseModel):
+    name: str = Field(min_length=1, max_length=120)
+    rss_url: str = Field(min_length=1, max_length=1000)
+
+
+class NewsSourceOut(BaseModel):
+    id: int
+    name: str
+    rss_url: str
+    created_at: str
+
+
+class NewsCollectRequest(BaseModel):
+    source_ids: list[int] | None = None
+
+
+class NewsCollectFailure(BaseModel):
+    source_id: int
+    source: str
+    error: str
+
+
+class NewsCollectResult(BaseModel):
+    inserted: int
+    skipped: int
+    failed: list[NewsCollectFailure]

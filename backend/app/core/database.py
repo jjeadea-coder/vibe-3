@@ -5,7 +5,7 @@ from typing import Iterator
 
 from app.core.config import DATABASE_PATH, DATA_DIR
 
-SCHEMA_VERSION = "0.2.0"
+SCHEMA_VERSION = "0.3.0"
 
 SCHEMA_SQL = """
 CREATE TABLE IF NOT EXISTS app_metadata (
@@ -49,6 +49,21 @@ CREATE TABLE IF NOT EXISTS news_articles (
   published_at TEXT,
   summary TEXT,
   keyword TEXT,
+  is_bookmarked INTEGER NOT NULL DEFAULT 0,
+  collected_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS news_keywords (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  keyword TEXT NOT NULL UNIQUE,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS news_sources (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  rss_url TEXT NOT NULL UNIQUE,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 """
@@ -62,12 +77,28 @@ MIGRATED_COLUMNS = {
         "all_day": "INTEGER NOT NULL DEFAULT 0",
         "status": "TEXT NOT NULL DEFAULT 'confirmed'",
     },
+    "news_articles": {
+        "is_bookmarked": "INTEGER NOT NULL DEFAULT 0",
+        "collected_at": "TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP",
+    },
 }
 
 INDEX_SQL = (
     "CREATE INDEX IF NOT EXISTS idx_members_is_active ON members(is_active)",
     "CREATE INDEX IF NOT EXISTS idx_schedules_member_start ON schedules(member_id, start_at)",
     "CREATE INDEX IF NOT EXISTS idx_schedules_start_end ON schedules(start_at, end_at)",
+    "CREATE INDEX IF NOT EXISTS idx_news_articles_published ON news_articles(published_at)",
+    "CREATE INDEX IF NOT EXISTS idx_news_articles_keyword ON news_articles(keyword)",
+    "CREATE INDEX IF NOT EXISTS idx_news_articles_bookmarked ON news_articles(is_bookmarked)",
+)
+
+DEFAULT_NEWS_KEYWORDS = ("공공행정", "지방자치", "민원", "복지행정", "정부정책")
+
+DEFAULT_NEWS_SOURCES = (
+    (
+        "Google News 공공행정",
+        "https://news.google.com/rss/search?q=%EA%B3%B5%EA%B3%B5%ED%96%89%EC%A0%95&hl=ko&gl=KR&ceid=KR:ko",
+    ),
 )
 
 
@@ -86,6 +117,17 @@ def _ensure_columns(connection: sqlite3.Connection) -> None:
                 )
 
 
+def _seed_news_defaults(connection: sqlite3.Connection) -> None:
+    connection.executemany(
+        "INSERT OR IGNORE INTO news_keywords (keyword) VALUES (?)",
+        [(keyword,) for keyword in DEFAULT_NEWS_KEYWORDS],
+    )
+    connection.executemany(
+        "INSERT OR IGNORE INTO news_sources (name, rss_url) VALUES (?, ?)",
+        DEFAULT_NEWS_SOURCES,
+    )
+
+
 def initialize_database() -> Path:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -96,6 +138,8 @@ def initialize_database() -> Path:
 
         for statement in INDEX_SQL:
             connection.execute(statement)
+
+        _seed_news_defaults(connection)
 
         connection.execute(
             """
